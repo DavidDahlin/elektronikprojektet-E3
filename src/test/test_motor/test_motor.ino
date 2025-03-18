@@ -1,5 +1,5 @@
-const int dirPin = 3;      // Direction pin
-const int stepPin = 2;     // Step pin
+const int dirPin = 4;      // Direction pin
+const int stepPin = 1;     // Step pin
 const int stepsPer180 = 100; // Adjust based on microstepping (100 for full step)
 
 void setup() {
@@ -14,7 +14,7 @@ void loop() {
     digitalWrite(stepPin, HIGH);
     delayMicroseconds(10);   // Minimum pulse width for DRV8825
     digitalWrite(stepPin, LOW);
-    delayMicroseconds(1000); // Adjust delay to control speed (smaller = faster)
+    delayMicroseconds(10); // Adjust delay to control speed (smaller = faster)
   }
 
   delay(1000); // Pause between movements
@@ -25,8 +25,8 @@ void loop() {
     digitalWrite(stepPin, HIGH);
     delayMicroseconds(10);
     digitalWrite(stepPin, LOW);
-    delayMicroseconds(1000);
+    delayMicroseconds(10);
   }
 
-  delay(1000); // Pause before repeating
+  delay(10); // Pause before repeating
 }
