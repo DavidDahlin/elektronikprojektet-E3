@@ -4,7 +4,7 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-#include "matchUID.h"
+// #include "matchUID.h"
 
 
 
@@ -66,6 +66,7 @@ void setup() {
 
   SPI.begin();
   mfrc522.PCD_Init();
+
   pinMode(LED_PIN, OUTPUT);
   Serial.println("Scan RFID tag...");
   
@@ -78,9 +79,10 @@ void loop() {
   digitalWrite(LED_PIN, LOW);
 
   // Check for RFID tag
-  if (!mfrc522.PICC_IsNewCardPresent() || !mfrc522.PICC_ReadCardSerial()) {
+  if (!(mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial())) {
     return; // No tag detected
   }
+  Serial.println("Hej");
 
 
   String scannedUID;
@@ -118,7 +120,7 @@ void loop() {
     storedUIDString.toLowerCase();
 
     if(scannedUID.equals(storedUIDString)){
-      print
+      Serial.println("Truuu");
     }
   
 
