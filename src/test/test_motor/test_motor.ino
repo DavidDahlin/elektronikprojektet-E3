@@ -12,9 +12,9 @@ void loop() {
   digitalWrite(dirPin, HIGH); // Set direction (HIGH or LOW may vary)
   for (int i = 0; i < stepsPer180; i++) {
     digitalWrite(stepPin, HIGH);
-    delayMicroseconds(10);   // Minimum pulse width for DRV8825
+    delayMicroseconds(5000);   // Minimum pulse width for DRV8825
     digitalWrite(stepPin, LOW);
-    delayMicroseconds(10); // Adjust delay to control speed (smaller = faster)
+    delayMicroseconds(5000); // Adjust delay to control speed (smaller = faster)
   }
 
   delay(1000); // Pause between movements
@@ -23,10 +23,10 @@ void loop() {
   digitalWrite(dirPin, LOW);
   for (int i = 0; i < stepsPer180; i++) {
     digitalWrite(stepPin, HIGH);
-    delayMicroseconds(10);
+    delayMicroseconds(5000);
     digitalWrite(stepPin, LOW);
-    delayMicroseconds(10);
+    delayMicroseconds(5000);
   }
 
-  delay(10); // Pause before repeating
+  delay(1000); // Pause before repeating
 }
