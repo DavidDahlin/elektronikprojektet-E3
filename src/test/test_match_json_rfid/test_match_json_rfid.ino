@@ -14,7 +14,7 @@ const char* json = R"(
   {
     "Cat1": {
       "name": "Milo",
-      "uid": "c5 e0 f0 75",
+      "uid": "C5 e0 f0 75",
       "food": 100
 	  },
     "Cat2": {
@@ -114,14 +114,15 @@ void loop() {
     const char* storedUID = entry.value()["uid"].as<const char*>();
     const char* name = entry.value()["name"].as<const char*>();
     
+    String storedUIDString= String(storedUID);
+    storedUIDString.toLowerCase();
 
-    Serial.println(storedUID);
-
+    if(scannedUID.equals(storedUIDString)){
+      print
+    }
   
 
   
-
-
   // // Check if UID matches target
   // bool match = true;
   // for (byte i = 0; i < 4; i++) { // Assumes 4-byte UID
