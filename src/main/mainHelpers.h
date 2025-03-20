@@ -4,5 +4,6 @@
 #include <string.h>
 
 #include "food_dispencer/uidScan/uidScan.hpp"
+#include "food_dispencer/jsonInfo/jsonInfo.hpp"
 
 #endif

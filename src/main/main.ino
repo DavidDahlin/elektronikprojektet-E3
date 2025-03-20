@@ -17,7 +17,15 @@ void loop() {
   if(!uid.equals("")){
     Serial.print("Successfully found:");
     Serial.println(uid);
+
+    int dir = getMatchDirection(uid);
+    Serial.println(dir);
+
   }else{
     Serial.println("No tag found");
   }
+
+  
+
+  
 }

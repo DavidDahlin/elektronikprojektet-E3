@@ -19,7 +19,7 @@ const char* json = R"(
 	  },
     "Cat2": {
       "name": "Cocos",
-	    "uid": "B4 F5 19 85",
+	    "uid": "4e 5d d0 6f",
 	    "food": 200
 	  }
   }
@@ -32,7 +32,7 @@ const char* json = R"(
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 // Replace with your target UID (C5 E0 F0 75 in hex)
-byte targetUID[] = {0xC5, 0xE0, 0xF0, 0x75};
+// byte targetUID[] = {0xC5, 0xE0, 0xF0, 0x75};
 
 void setup() {
   Serial.begin(9600);
@@ -119,8 +119,13 @@ void loop() {
     String storedUIDString= String(storedUID);
     storedUIDString.toLowerCase();
 
+    
+
     if(scannedUID.equals(storedUIDString)){
       Serial.println("Truuu");
+
+      String catString = String(cat);
+      Serial.println(catString);
     }
   
 

@@ -16,10 +16,10 @@ void test(){
 }
 
 void setupReader(){
-  
+
   SPI.begin();
   mfrc522.PCD_Init();
-  
+
   Serial.println("RFID reader succesfully setup");
 }
 
