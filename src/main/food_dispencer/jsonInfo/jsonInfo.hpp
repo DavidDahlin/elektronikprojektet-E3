@@ -5,7 +5,7 @@
 
 
 //jsonfilen
-const char* json = R"(
+const char* catJson = R"(
 {
 	"cat1": {
 		"name": "Milo",
@@ -18,16 +18,42 @@ const char* json = R"(
 		"uid": "4e 5d d0 6f",
 		"food weight, grams": 200,
 		"dir": 0
+	},	
+	"wifi": {
+		"ssid" = "...",
+		"password" = "..."
+	}
+}
+)";
+
+
+const char* wifiJson = R"(
+{	
+	"wifi": {
+		"ssid" = "...",
+		"password" = "..."
 	}
 }
 )";
 
 
 
-DynamicJsonDocument doc(1024);
 
-void getDoc(){
-	DeserializationError error = deserializeJson(doc, json);
+DynamicJsonDocument catDoc(1024);
+DynamicJsonDocument wifiDoc(1024);
+
+void getCatDoc(){
+	DeserializationError error = deserializeJson(catDoc, catJson);
+
+	if (error) {
+		Serial.print("JSON parsing failed: ");
+		Serial.println(error.c_str());
+		return;
+	}
+}
+
+void getwifiDoc(){
+	DeserializationError error = deserializeJson(wifiDoc, wifiJson);
 
 	if (error) {
 		Serial.print("JSON parsing failed: ");
@@ -37,9 +63,9 @@ void getDoc(){
 }
 
 int getMatchDirection(String scannedUID){	
-	getDoc();
+	getCatDoc();
 
-	for(JsonPair entry: doc.as<JsonObject>()){
+	for(JsonPair entry: catDoc.as<JsonObject>()){
 		const char* storedUID = entry.value()["uid"].as<const char*>();
 		int dir = entry.value()["dir"].as<int>();
 		
@@ -56,9 +82,10 @@ int getMatchDirection(String scannedUID){
 
 
 int getFoodweight(String cat){	
-	getDoc();
+	
+	getCatDoc();
 
-	for(JsonPair entry: doc.as<JsonObject>()){
+	for(JsonPair entry: catDoc.as<JsonObject>()){
 		const char* storedCat = entry.key().c_str();
 		int foodWeight = entry.value()["food weight, grams"].as<int>();
 		
