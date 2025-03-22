@@ -18,26 +18,18 @@ const char* catJson = R"(
 		"uid": "4e 5d d0 6f",
 		"food weight, grams": 200,
 		"dir": 0
-	},	
-	"wifi": {
-		"ssid" = "...",
-		"password" = "..."
 	}
-}
 )";
 
 
 const char* wifiJson = R"(
-{	
+{
 	"wifi": {
-		"ssid" = "...",
-		"password" = "..."
+		"ssid": "Säpo buss: 3",
+		"password": "mumintrollen420blazeIt"
 	}
 }
 )";
-
-
-
 
 DynamicJsonDocument catDoc(1024);
 DynamicJsonDocument wifiDoc(1024);
@@ -52,7 +44,7 @@ void getCatDoc(){
 	}
 }
 
-void getwifiDoc(){
+void getWifiDoc(){
 	DeserializationError error = deserializeJson(wifiDoc, wifiJson);
 
 	if (error) {
@@ -100,7 +92,26 @@ int getFoodweight(String cat){
 	return -1;
 }
 
+const char* getWifiSSID(){
+	getWifiDoc();
+	for(JsonPair entry: wifiDoc.as<JsonObject>()){
+		const char* ssid = entry.value()["ssid"].as<const char*>();
 
+		return ssid;
+	}
+	Serial.print("Något gick snett med att hämta ssid");
+	return NULL;
+}
 
+const char* getWifiPassword(){
+	getWifiDoc();
+	for(JsonPair entry: wifiDoc.as<JsonObject>()){
+		const char* password = entry.value()["password"].as<const char*>();
+
+		return password;
+	}
+	Serial.print("Något gick snett med att hämta password");
+	return NULL;
+}
 
 #endif

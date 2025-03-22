@@ -3,7 +3,7 @@
 
 #include <SPI.h>
 #include <MFRC522.h>
-#include <PrintEx.h>
+//#include <PrintEx.h>
 
 unsigned long startTime;
 
