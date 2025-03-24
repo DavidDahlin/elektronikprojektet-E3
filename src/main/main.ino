@@ -10,8 +10,7 @@ void setup() {
   Serial.begin(9600);
   delay(1000);
 
-  // setupReader();
-  Serial.println("Hej");
+  setupReader();
 
   ssid = getWifiSSID();
   password = getWifiPassword();
@@ -24,18 +23,18 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  // String uid = scanForTags();
-  // if(!uid.equals("")){
-  //   Serial.print("Successfully found:");
-  //   Serial.println(uid);
+  put your main code here, to run repeatedly:
+  String uid = scanForTags();
+  if(!uid.equals("")){
+    Serial.print("Successfully found:");
+    Serial.println(uid);
 
-    // int dir = getMatchDirection(uid);
-    // Serial.println(dir);
+    int dir = getMatchDirection(uid);
+    Serial.println(dir);
 
-  // }else{
-  //   Serial.println("No tag found");
-  // }
+  }else{
+    Serial.println("No tag found");
+  }
 
   
 
