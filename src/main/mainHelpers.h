@@ -5,5 +5,6 @@
 
 #include "food_dispencer/uidScan/uidScan.hpp"
 #include "food_dispencer/jsonInfo/jsonInfo.hpp"
+#include "food_dispencer/avstandsmatning/avstandsmatning.hpp"
 
 #endif
