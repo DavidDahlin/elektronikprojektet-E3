@@ -1,32 +1,59 @@
-const int dirPin = 4;      // Direction pin
-const int stepPin = 1;     // Step pin
+
+#define STEP_PIN 3
+#define DIR_PIN 4
+#define ENABLE_PIN 7
+
+#define MODE0_PIN 10
+#define MODE1_PIN 11
+#define MODE2_PIN 12
+
+
+
+
+
+
 const int stepsPer180 = 100; // Adjust based on microstepping (100 for full step)
 
+void movestepper(int steps){
+  for(int i = 0; i < steps; i++){
+    digitalWrite(STEP_PIN, HIGH);
+    delayMicroseconds(1000);
+    digitalWrite(STEP_PIN, LOW);
+    delayMicroseconds(1000);
+
+  }
+}
+
 void setup() {
-  pinMode(dirPin, OUTPUT);
-  pinMode(stepPin, OUTPUT);
+  pinMode(STEP_PIN, OUTPUT);
+  pinMode(DIR_PIN, OUTPUT);
+  pinMode(ENABLE_PIN, OUTPUT);
+  pinMode(MODE0_PIN, OUTPUT);
+  pinMode(MODE1_PIN, OUTPUT);
+  pinMode(MODE2_PIN, OUTPUT);
+
+  digitalWrite(DIR_PIN, LOW);
+  
+  digitalWrite(ENABLE_PIN, HIGH);
+  delay(100);
+  digitalWrite(ENABLE_PIN, LOW);
+
+  //Sätter stegen till 1/8
+  digitalWrite(MODE0_PIN, HIGH);
+  digitalWrite(MODE1_PIN, HIGH);
+  digitalWrite(MODE2_PIN, LOW);
+
+
 }
 
 void loop() {
   // Rotate 180 degrees clockwise
-  digitalWrite(dirPin, HIGH); // Set direction (HIGH or LOW may vary)
-  for (int i = 0; i < stepsPer180; i++) {
-    digitalWrite(stepPin, HIGH);
-    delayMicroseconds(5000);   // Minimum pulse width for DRV8825
-    digitalWrite(stepPin, LOW);
-    delayMicroseconds(5000); // Adjust delay to control speed (smaller = faster)
-  }
+  
+  int n = int(8*360/1.8/3);
 
-  delay(1000); // Pause between movements
+  movestepper(n);
+  delay(2000);
+  digitalWrite(DIR_PIN, !digitalRead(DIR_PIN));
 
-  // Rotate 180 degrees counter-clockwise
-  digitalWrite(dirPin, LOW);
-  for (int i = 0; i < stepsPer180; i++) {
-    digitalWrite(stepPin, HIGH);
-    delayMicroseconds(5000);
-    digitalWrite(stepPin, LOW);
-    delayMicroseconds(5000);
-  }
-
-  delay(1000); // Pause before repeating
+  
 }
