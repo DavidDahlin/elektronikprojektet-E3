@@ -3,7 +3,9 @@
 
 #include <math.h>
 
-#define TRIG_PIN 12
+//Set pins
+#define TRIG_PIN_1 12
+#define TRIG_PIN_2 13
 #define ECHO_PIN_1 11
 #define ECHO_PIN_2 10
 
@@ -11,52 +13,23 @@ const float SPEED_OF_SOUND = 343;
 const float MIN_DIST =50;
 
 void setup_avstandsmatare(){
-	pinMode(TRIG_PIN, OUTPUT);
+	pinMode(TRIG_PIN_1, OUTPUT);
+	pinMode(TRIG_PIN_2, OUTPUT);
 	pinMode(ECHO_PIN_1, INPUT);
 	pinMode(ECHO_PIN_2, INPUT);
-	digitalWrite(TRIG_PIN, LOW);
+	digitalWrite(TRIG_PIN_1, LOW);
+	digitalWrite(TRIG_PIN_2, LOW);
 }
 
-void avstand_test(){
-	digitalWrite(TRIG_PIN,HIGH);
-	delayMicroseconds(10);
-	digitalWrite(TRIG_PIN,LOW);
-
-	long duration_1 = pulseIn(ECHO_PIN_1, HIGH, 25000);
-
-	delay(500);
-	digitalWrite(TRIG_PIN,HIGH);
-	delayMicroseconds(10);
-	digitalWrite(TRIG_PIN,LOW);
-
-	long duration_2 = pulseIn(ECHO_PIN_2, HIGH, 25000);
-
-	float distance_1 = duration_1 / 2 * SPEED_OF_SOUND * pow(10, -3);
-	/*float distance_1 = duration_1 *0.1715;*/
-
-	float distance_2 = duration_2 / 2 * SPEED_OF_SOUND * pow(10, -3);
-	/*float distance_2 = duration_2 *0.1715;*/
-
-	Serial.print("Distance 1: ");
-	Serial.print(distance_1);
-	Serial.println(" mm");
-	
-	delay(500);
-	Serial.print("Distance 2: ");
-	Serial.print(distance_2);
-	Serial.println(" mm");
-
-	delay(500);
-}
 
 float getDistance1(){
 	float avg = 0;
 	int n = 100;
 
 	for(int i = 0; i < n ; i++){
-		digitalWrite(TRIG_PIN,HIGH);
+		digitalWrite(TRIG_PIN_1,HIGH);
 		delayMicroseconds(10);
-		digitalWrite(TRIG_PIN,LOW);
+		digitalWrite(TRIG_PIN_1,LOW);
 		
 		long duration = pulseIn(ECHO_PIN_1, HIGH, 25000);
 		float distance = duration / 2 * SPEED_OF_SOUND * pow(10, -3); 
@@ -76,9 +49,9 @@ float getDistance2(){
 	int n = 100;
 
 	for(int i = 0; i < n ; i++){
-		digitalWrite(TRIG_PIN,HIGH);
+		digitalWrite(TRIG_PIN_2,HIGH);
 		delayMicroseconds(10);
-		digitalWrite(TRIG_PIN,LOW);
+		digitalWrite(TRIG_PIN_2,LOW);
 		
 		long duration = pulseIn(ECHO_PIN_2, HIGH, 25000);
 		float distance = duration / 2 * SPEED_OF_SOUND * pow(10, -3); 
@@ -93,15 +66,15 @@ float getDistance2(){
 	return avg;
 }
 
-bool isNotFull1(){
+bool isFull1(){
 
 	float avg = 0;
 	int n = 100;
 
 	for(int i = 0; i < n ; i++){
-		digitalWrite(TRIG_PIN,HIGH);
+		digitalWrite(TRIG_PIN_1,HIGH);
 		delayMicroseconds(10);
-		digitalWrite(TRIG_PIN,LOW);
+		digitalWrite(TRIG_PIN_1,LOW);
 		
 		long duration = pulseIn(ECHO_PIN_1, HIGH, 25000);
 		float distance = duration / 2 * SPEED_OF_SOUND * pow(10, -3); 
@@ -114,20 +87,20 @@ bool isNotFull1(){
 		delayMicroseconds(10);
 	}
 	if(avg > MIN_DIST){
-		return true;
+		return false;
 	}
-	return false;
+	return true;
 }
 
-bool isNotFull2(){
+bool isFull2(){
 
 	float avg = 0;
 	int n = 100;
 
 	for(int i = 0; i < n ; i++){
-		digitalWrite(TRIG_PIN,HIGH);
+		digitalWrite(TRIG_PIN_2,HIGH);
 		delayMicroseconds(10);
-		digitalWrite(TRIG_PIN,LOW);
+		digitalWrite(TRIG_PIN_2,LOW);
 		
 		long duration = pulseIn(ECHO_PIN_2, HIGH, 25000);
 		float distance = duration / 2 * SPEED_OF_SOUND * pow(10, -3); 
@@ -140,9 +113,9 @@ bool isNotFull2(){
 		delayMicroseconds(10);
 	}
 	if(avg > MIN_DIST){
-		return true;
+		return false;
 	}
-	return false;
+	return true;
 }
 
 

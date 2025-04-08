@@ -7,5 +7,7 @@
 #include "masterHelpers/jsonInfo/jsonInfo.hpp"
 #include "masterHelpers/avstandsmatning/avstandsmatning.hpp"
 #include "masterHelpers/i2c/i2c.hpp"
+#include "masterHelpers/motors/motors.hpp"
+
 
 #endif

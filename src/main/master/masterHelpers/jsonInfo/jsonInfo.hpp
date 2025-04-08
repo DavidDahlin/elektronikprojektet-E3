@@ -12,14 +12,14 @@ const char* catJson = R"(
 		"uid": "C5 e0 f0 75",
 		"food weight, grams": 100,
 		"dir": 1,
-		"feeding time":["08:30", "12:00", "18:30"]
+		"fill time":"08:30, 12:00, 18:30"
 	},
 	"cat2": {
 		"name": "Cocos",
 		"uid": "4e 5d d0 6f",
 		"food weight, grams": 200,
-		"dir": 0
-		"feeding time":["08:50", "12:30", "18:50"]
+		"dir": 0,
+		"fill time":"08:50, 12:30, 18:50"
 	}
 }
 )";
@@ -59,7 +59,6 @@ void getWifiDoc(){
 
 int getMatchDirection(String scannedUID){	
 	getCatDoc();
-
 	for(JsonPair entry: catDoc.as<JsonObject>()){
 		const char* storedUID = entry.value()["uid"].as<const char*>();
 		int dir = entry.value()["dir"].as<int>();
@@ -75,13 +74,29 @@ int getMatchDirection(String scannedUID){
 	return -1;
 }
 
-int getFoodweight(String cat){	
-	
+String getOtherCatUID(String scannedUID){
 	getCatDoc();
+	for(JsonPair entry: catDoc.as<JsonObject>()){
+		const char* storedUID = entry.value()["uid"].as<const char*>();
+		
+		String storedUIDString= String(storedUID);
+		storedUIDString.toLowerCase();
 
+		if(!scannedUID.equals(storedUIDString)){
+			return storedUIDString;
+		}
+	}
+
+	return "";
+}
+
+
+double getFoodweight(String cat){	
+
+	getCatDoc();
 	for(JsonPair entry: catDoc.as<JsonObject>()){
 		const char* storedCat = entry.key().c_str();
-		int foodWeight = entry.value()["food weight, grams"].as<int>();
+		double foodWeight = entry.value()["food weight, grams"].as<double>();
 		
 		String storedCatString = String(storedCat);
 		storedCatString.toLowerCase();
@@ -90,9 +105,24 @@ int getFoodweight(String cat){
 			return foodWeight;
 		}
 	}
-
 	return -1;
 }
+
+const char* getFillTime(String cat){
+	getCatDoc();
+	for(JsonPair entry: catDoc.as<JsonObject>()){
+		const char* storedCat = entry.key().c_str();
+		const char* fillTime = entry.value()["fill time"].as<const char*>();
+		
+		String storedCatString = String(storedCat);
+		storedCatString.toLowerCase();
+
+		if(cat.equals(storedCatString)){
+			return fillTime;
+		}
+	}
+}
+
 
 const char* getWifiSSID(){
 	getWifiDoc();
@@ -115,5 +145,6 @@ const char* getWifiPassword(){
 	Serial.print("Något gick snett med att hämta password");
 	return NULL;
 }
+
 
 #endif

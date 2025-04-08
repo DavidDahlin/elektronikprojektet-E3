@@ -71,6 +71,11 @@ String getTime(){
 	time.trim();
 	return time;
 }
+double getTimeDouble(){
+	int hour, minute;
+	sscanf(getTime().c_str(), " %d:%d", &hour, &minute);
+	return (double)(hour + (double)minute/60);
+}
 
 void sendSSID(String ssid){
 	String formated = "2:" + ssid;

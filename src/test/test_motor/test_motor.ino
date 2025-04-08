@@ -17,10 +17,9 @@ const int stepsPer180 = 100; // Adjust based on microstepping (100 for full step
 void movestepper(int steps){
   for(int i = 0; i < steps; i++){
     digitalWrite(STEP_PIN, HIGH);
-    delayMicroseconds(1000);
+    delayMicroseconds(2500); //För ett varv per sekund
     digitalWrite(STEP_PIN, LOW);
-    delayMicroseconds(1000);
-
+    delayMicroseconds(2500);
   }
 }
 
@@ -42,8 +41,6 @@ void setup() {
   digitalWrite(MODE0_PIN, HIGH);
   digitalWrite(MODE1_PIN, HIGH);
   digitalWrite(MODE2_PIN, LOW);
-
-
 }
 
 void loop() {
