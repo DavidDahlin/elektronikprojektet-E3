@@ -51,6 +51,7 @@ void setTurnStep(){//Testa fram senare
 }
 
 int getFillSteps(double weight){
+	return 1000;
 	// formula for getting the right amount of food
 }
 

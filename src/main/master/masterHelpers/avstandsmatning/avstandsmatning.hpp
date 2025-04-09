@@ -4,10 +4,11 @@
 #include <math.h>
 
 //Set pins
-#define TRIG_PIN_1 12
-#define TRIG_PIN_2 13
-#define ECHO_PIN_1 11
-#define ECHO_PIN_2 10
+#define TRIG_PIN_1 44
+#define TRIG_PIN_2 46
+#define ECHO_PIN_1 45
+#define ECHO_PIN_2 47
+
 
 const float SPEED_OF_SOUND = 343;
 const float MIN_DIST =50;
