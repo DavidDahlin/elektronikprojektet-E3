@@ -12,7 +12,7 @@ const char* catJson = R"(
 		"uid": "C5 e0 f0 75",
 		"food weight, grams": 100,
 		"dir": 1,
-		"fill time":"08:30, 12:00, 18:30"
+		"fill time":"12:13, 12:14, 16:00"
 	},
 	"cat2": {
 		"name": "Cocos",
@@ -34,8 +34,10 @@ const char* wifiJson = R"(
 }
 )";
 
-DynamicJsonDocument catDoc(1024);
-DynamicJsonDocument wifiDoc(1024);
+StaticJsonDocument<256> catDoc;
+StaticJsonDocument<256> wifiDoc;
+// DynamicJsonDocument catDoc(1024);
+// DynamicJsonDocument wifiDoc(1024);
 
 void getCatDoc(){
 	DeserializationError error = deserializeJson(catDoc, catJson);
@@ -67,10 +69,12 @@ int getMatchDirection(String scannedUID){
 		storedUIDString.toLowerCase();
 
 		if(scannedUID.equals(storedUIDString)){
+			Serial.println("matched uid found, direction returned");
 			return dir;
 		}
 	}
-
+	
+	Serial.println("matched uid not found, -1 returned");
 	return -1;
 }
 
@@ -83,16 +87,15 @@ String getOtherCatUID(String scannedUID){
 		storedUIDString.toLowerCase();
 
 		if(!scannedUID.equals(storedUIDString)){
+			Serial.println("Othercat uid: " + storedUIDString + ", found");
 			return storedUIDString;
 		}
 	}
-
+	Serial.println("Other cat uid not found");
 	return "";
 }
 
-
 double getFoodweight(String cat){	
-
 	getCatDoc();
 	for(JsonPair entry: catDoc.as<JsonObject>()){
 		const char* storedCat = entry.key().c_str();

@@ -1,8 +1,8 @@
 #ifndef MOTORS_HPP
 #define MOTORS_HPP
 
-const int STEP_PIN = 22;
-const int DIR_PIN = 23;
+const int STEP_PIN = 23;
+const int DIR_PIN = 22;
 
 const int ENABLE_PIN_FILL_CAT_1 = 24;
 const int ENABLE_PIN_FILL_CAT_2 = 25;
@@ -32,6 +32,8 @@ void setupMotor(){
 	digitalWrite(ENABLE_PIN_FILL_CAT_1, HIGH);
 	digitalWrite(ENABLE_PIN_FILL_CAT_2, HIGH);
 	digitalWrite(ENABLE_PIN_ROTATION_MOTOR, HIGH);
+
+	Serial.println("Motors sucessfully setup");
 }
 
 
@@ -39,7 +41,8 @@ void setFullStep(){
 	digitalWrite(MODE0_PIN, LOW);
 	digitalWrite(MODE1_PIN, LOW);
 	digitalWrite(MODE2_PIN, LOW);
-	step = 100;  
+	step = 100;
+	Serial.println("Full step set");
 }
 
 void setTurnStep(){//Testa fram senare	
@@ -48,6 +51,7 @@ void setTurnStep(){//Testa fram senare
 	digitalWrite(MODE1_PIN, LOW);
 	digitalWrite(MODE2_PIN, LOW);
 	step = 50;//100/2  
+	Serial.println("Turn step set");
 }
 
 int getFillSteps(double weight){
@@ -56,12 +60,14 @@ int getFillSteps(double weight){
 }
 
 void moveStepper(int steps, int microSecondsDelay){
+	Serial.println("Motor started");
 	for(int i = 0; i < steps; i++){
 		digitalWrite(STEP_PIN, HIGH);
-		delayMicroseconds(2500); //För ett varv per sekund
+		delayMicroseconds(500); //test
 		digitalWrite(STEP_PIN, LOW);
-		delayMicroseconds(2500);
+		delayMicroseconds(500);
 	}
+	Serial.println("Motor stopped");
 }
 
 void fill(double weight, int cat){
@@ -88,12 +94,14 @@ void turn(int dir){
 	setTurnStep();
 	digitalWrite(DIR_PIN, dir);
 	
-	int steps = 33; //33 halfSteps = 120
+	int steps = 133; //33 halfSteps = 120
 	moveStepper(steps, turnMicroSecondsDelay); 
 	
 
 	digitalWrite(ENABLE_PIN_ROTATION_MOTOR, HIGH);//reset
 }
+
+
 void turnToBase(int pos){
 	int dir = !pos; 
 	turn(dir);

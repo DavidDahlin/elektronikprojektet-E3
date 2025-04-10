@@ -7,8 +7,8 @@
 
 unsigned long startTime;
 
-#define RST_PIN  9
-#define SS_PIN   10
+#define RST_PIN  5
+#define SS_PIN   53
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 void setupReader(){
@@ -23,6 +23,7 @@ String scanForTags(){
 
   while(millis() - startTime < 10000){
     if(mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()){
+      Serial.println("Läser..."); 
       String scannedUID;
       for (byte i = 0; i < mfrc522.uid.size; i++) {
         if (mfrc522.uid.uidByte[i] < 0x10) scannedUID += "0";
@@ -30,10 +31,12 @@ String scanForTags(){
         scannedUID += " ";
       }
     scannedUID.trim(); // Remove trailing space
+    Serial.println("Scanned: " + scannedUID);
     return scannedUID;
     }
   }
   mfrc522.PICC_HaltA(); // Stop communication
+  Serial.println("Did not find anything");
   return "";
 }
 
@@ -49,6 +52,7 @@ bool quickScanFor(String uid){
       }
       scannedUID.trim(); // Remove trailing space
       if(scannedUID.equals(uid)){
+        Serial.println("Wrong cat detected");
         return true;
       }
     }

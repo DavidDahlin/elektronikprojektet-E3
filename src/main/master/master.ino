@@ -2,7 +2,7 @@
 
 const char* ssid;
 const char* password;
-const long feedingTime = 1000*60*5; //5 minuter i millisekunder
+const long feedingTime = 1000*10; //10 s i millisekunder
 const int nFillings = 3;
 
 double cat1FT[nFillings];
@@ -21,10 +21,15 @@ void fillCatFTArray(char* cs, String cat){ // används bara i resetFillList
     // sscanf() reads the two ints separated by a colon.
     sscanf(token, " %d:%d", &hour, &minute);
     double fillTime = (double)(hour + (double)minute/60);
-    if(fillTime > getTimeDouble()){
+    Serial.print(cat + " feeding time n.");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.println(fillTime);
+    if(fillTime < getTimeDouble()){
       fillTime = 24;
     }
     if(cat.equals("cat1")){
+
       cat1FT[i] = fillTime;
     }else if(cat.equals("cat2")){
       cat2FT[i] = fillTime;
@@ -51,6 +56,7 @@ void fillBowl(){
   for(int i = 0; i < nFillings; i++){
     if(cat1FT[i]< 24 && cat1FT[i] < timeDouble){
       if(!isFull1()){
+        Serial.println("Cat 1 fill, started");
         weight = getFoodweight("cat1");
         fill(weight, 1);
         cat1FT[i] = 24;
@@ -58,6 +64,7 @@ void fillBowl(){
     }
     if(cat2FT[i]< 24 && cat2FT[i] < timeDouble){
       if(!isFull2()){
+        Serial.println("Cat 2 fill, started");
         weight = getFoodweight("cat2");
         fill(weight, 2);
         cat2FT[i] = 24;
@@ -72,17 +79,17 @@ void midFeedSwitch(String uid){
     return;
   }
   String otherUid = getOtherCatUID(uid);
-  // motorSpinn(dir);
+    turn(dir);
   pos = !dir;
   //control time and search for other cat
   long start = millis();
   while(millis()-start < feedingTime){
     if(quickScanFor(otherUid)){
-      //midFeedSwitch(uid);
+      midFeedSwitch(otherUid);
       return;
     }
   }
-  //turnToBase(pos)
+  turnToBase(pos);
 }
 
 void feedFromBowl(String uid){
@@ -91,18 +98,18 @@ void feedFromBowl(String uid){
     return;
   }
   String otherUid = getOtherCatUID(uid);
-  //motorSpinnRegular(dir);
+  turn(dir);
   pos = dir;
   //control time and search for other cat
   long start = millis();
   while(millis()-start < feedingTime){
     if(quickScanFor(otherUid)){
-    //midFeedSwitch(uid);
+    midFeedSwitch(otherUid);
     return;
     }
   }
   //....
-  //turnToBase(pos)
+  turnToBase(pos);
 }
 
 
@@ -132,13 +139,23 @@ void setup() {
   fillCatFTArray(getFillTime("cat2"), "cat2");
   resetFill = true;
 
-  // setupReader();
-  // setup_avstandsmatare();
+  setupReader();
+  setup_avstandsmatare();
+  setupMotor();
 
   delay(2000);
 }
 
 void loop() {
+  
+
+
+  //Feeding
+  String uid = scanForTags();
+  if(!uid.equals("")){
+    feedFromBowl(uid);
+  }
+
   //for testing
   String t = getTime();
   double d = getTimeDouble();
@@ -147,24 +164,23 @@ void loop() {
   Serial.println(d); 
 
 
+  Serial.print("cat1 fill times: ");
+  Serial.print(cat1FT[0]);
+  Serial.print(", ");
+  Serial.print(cat1FT[1]);
+  Serial.print(", ");
+  Serial.println(cat1FT[2]);
 
-  //Feeding
-  // String uid = scanForTags();
-  // if(!uid.equals("")){
-  //   //feedFromBowl(uid)
-  // }
-
-  for(int i = 0; i < nFillings; i++){
-    
-    // Serial.print(cat1FT[0]);
-    // Serial.print(", ");
-    // Serial.print(cat1FT[1]);
-    // Serial.print(", ");
-    // Serial.println(cat1FT[2]);
-    // cat1FT[i] = 24;
+  Serial.print("cat2 fill times: ");
+  Serial.print(cat2FT[0]);
+  Serial.print(", ");
+  Serial.print(cat2FT[1]);
+  Serial.print(", ");
+  Serial.println(cat2FT[2]);
 
   
-  }
+  fillBowl();
+  
   
   // String uid = scanForTags();
   // if(!uid.equals("")){
@@ -191,6 +207,8 @@ void loop() {
   // avstand_test();
   
   //hamta nya tider för matning
+
+
   resetFillList();
   
 

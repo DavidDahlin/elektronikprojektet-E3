@@ -1,13 +1,13 @@
 
-#define STEP_PIN 3
-#define DIR_PIN 4
-#define ENABLE_PIN 7
+#define STEP_PIN 23
+#define DIR_PIN 22
+#define ENABLE_PIN 26
 
-#define MODE0_PIN 10
-#define MODE1_PIN 11
-#define MODE2_PIN 12
+#define MODE0_PIN 27
+#define MODE1_PIN 28
+#define MODE2_PIN 29
 
-
+int n;
 
 
 
@@ -37,17 +37,20 @@ void setup() {
   delay(100);
   digitalWrite(ENABLE_PIN, LOW);
 
-  //Sätter stegen till 1/8
-  digitalWrite(MODE0_PIN, HIGH);
-  digitalWrite(MODE1_PIN, HIGH);
+  //Sätter stegen till 1
+  digitalWrite(MODE0_PIN, LOW);
+  digitalWrite(MODE1_PIN, LOW);
   digitalWrite(MODE2_PIN, LOW);
+
+
 }
 
 void loop() {
   // Rotate 180 degrees clockwise
   
-  int n = int(8*360/1.8/3);
-
+  // int n = int(8*360/1.8/3);
+  
+  n = 1600;
   movestepper(n);
   delay(2000);
   digitalWrite(DIR_PIN, !digitalRead(DIR_PIN));
