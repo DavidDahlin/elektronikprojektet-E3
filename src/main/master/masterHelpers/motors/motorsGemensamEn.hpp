@@ -62,9 +62,9 @@ int getFillSteps(double weight){
 void moveStepper(int steps, int microSecondsDelay, int stepPin){
 	for(int i = 0; i < steps; i++){
 		digitalWrite(stepPin, HIGH);
-		delayMicroseconds(2500); //För ett varv per sekund
+		delayMicroseconds(microSecondsDelay); //För ett varv per sekund
 		digitalWrite(stepPin, LOW);
-		delayMicroseconds(2500);
+		delayMicroseconds(microSecondsDelay);
 	}
 }
 
@@ -86,7 +86,7 @@ void turn(int dir){
 	setTurnStep();
 	digitalWrite(DIR_PIN, dir);
 	
-	int steps = 33; //33 halfSteps = 120
+	int steps = 133; //33 halfSteps = 120
 	moveStepper(steps, turnMicroSecondsDelay, STEP_PIN_ROTATE);
 }
 void turnToBase(int pos){

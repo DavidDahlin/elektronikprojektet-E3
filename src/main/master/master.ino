@@ -158,10 +158,10 @@ void loop() {
 
   //for testing
   String t = getTime();
-  double d = getTimeDouble();
+  double t_double = getTimeDouble();
   Serial.println("time: " + t);
   Serial.print("double time: ");
-  Serial.println(d); 
+  Serial.println(t_double); 
 
 
   Serial.print("cat1 fill times: ");
