@@ -15,7 +15,8 @@ Här kan vi skriva dokumentation om hur produkten används.
 
 ### Motordrivarna, arduinon & spänningsaggregatet
 
-![Motordrivaren](images/motordrivare.png)
+<!-- ![Motordrivaren](images/motordrivare.png) -->
+<img src="images/motordrivare.png" alt="motordrivaren" style="float: right;"/>
 
 1. Koppla samman pin 6 och 7 på alla motordrivare.
 
