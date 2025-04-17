@@ -9,6 +9,7 @@ Här kan vi skriva dokumentation om hur produkten används.
 * 3 [Motordrivare](https://www.electrokit.com/stegmotordrivare-drv8825)
 * 1 [RFID-läsare](https://www.electrokit.com/rfid-modul-med-tva-tags-13.56mhz)
 * 1 [Nivåomvandlare](https://www.electrokit.com/nivaomvandlare-4-kanaler-bidirektionell)
+* 2 [Avståndssensorer](https://www.electrokit.com/en/avstandsmatare-ultraljud-hc-sr04-2-400cm)
 * 1 Spännningsaggregat
 * 1 100 $\mu$F kondensator
 
@@ -37,26 +38,26 @@ Här kan vi skriva dokumentation om hur produkten används.
 
 
 5. Välj ut en av motordrivarna och koppla enligt följande mellan motordrivaren, arduinon och spänningsaggregatet.
-    * Jord på spänningsaggregatet &rarr **GND**
-    * Pin 1 &rarr **GP26**
-    * Pin 2 &rarr **GP27**
-    * Pin 3 &rarr **GP28**
-    * Pin 4 &rarr **GP29**
-    * Pin 5 &rarr **5V**
-    * Pin 8 &rarr **GP25**
-    * Pin 9 &rarr **GND**
-    * Pin 16 &rarr 15 Volt på spänningsaggregatet
+    * Jord på spänningsaggregatet &harr; **GND**
+    * Pin 1 &harr; **D26**
+    * Pin 2 &harr; **D27**
+    * Pin 3 &harr; **D28**
+    * Pin 4 &harr; **D29**
+    * Pin 5 &harr; **5V**
+    * Pin 8 &harr; **D25**
+    * Pin 9 &harr; **GND**
+    * Pin 16 &harr; 15 Volt på spänningsaggregatet
 
 6. Koppla motordrivarna till motorerna enligt följande.
-    * Pin 14 &rarr **Blå**
-    * Pin 13 &rarr **Röd**
-    * Pin 12 &rarr **Grön**
-    * Pin 11 &rarr **Svart**
+    * Pin 14 &harr; **Blå**
+    * Pin 13 &harr; **Röd**
+    * Pin 12 &harr; **Grön**
+    * Pin 11 &harr; **Svart**
 
 7. Välj ut vilken uppgift varje motordrivare har och koppla Pin 7 enligt följande.
-    * Fyller skål 1 &rarr **GP22**
-    * Fyller skål 2 &rarr **GP23**
-    * Vrider skålarna &rarr **GP24**
+    * Fyller skål 1 &harr; **D22**
+    * Fyller skål 2 &harr; **D23**
+    * Vrider skålarna &harr; **D24**
 
 ### ESP32, nivåomvandlaren & arduinon
 
@@ -66,17 +67,49 @@ Här kan vi skriva dokumentation om hur produkten används.
 
 #### Mellan Esp32 och nivåomvandlaren
 
-* **GP9** &rarr **LV2** (SDA channel)
-* **GP8** &rarr **LV4** (SCL channel)
-* **GND** &rarr **GND** 
+* **D9** &harr; **LV2** (SDA channel)
+* **D8** &harr; **LV4** (SCL channel)
+* **GND** &harr; **GND** 
 
 #### Mellan arduinon och nivåomvandlaren
 
-* **5V** &rarr **HV**
-* **3.3V** &rarr **LV**
-* **GND** &rarr **GND**
-* **GP20** &rarr **HV2** (SDA channel)
-* **GP21** &rarr **HV4** (SCL channel)
+* **5V** &harr; **HV**
+* **3.3V** &harr; **LV**
+* **GND** &harr; **GND**
+* **D20** &harr; **HV2** (SDA channel)
+* **D21** &harr; **HV4** (SCL channel)
 
-### 
+### RFID-läsaren och arduinon
 
+<img src="images/rfid.jpg" alt="rfid" height="200pt" style="float: right;"/>
+
+Koppla från RFID-läsaren till arduinon enligt följande. 
+* **RST** &harr; **D5**
+* **SPI SS** &harr; **D53**
+* **SPI MOSI** &harr; **D51**
+* **SPI MISO** &harr; **D50**
+* **SPI SCK** &harr; **D52**
+* **VCC** &harr; **3.3V**
+* **GND** &harr; **GND**
+
+### Avståndssencorerna och arduinon
+
+<img src="images/avstandsmatare.png" alt="avstand" height="200pt" style="float: right;"/>
+
+Koppla enligt följande för båda sensorerna.
+* **VCC** &harr; **5V**
+* **GND** &harr; **GND**
+
+Välj sedan ut vilken mätare som ska mäta på skål 1 och koppla,
+* **TRIG** &harr; **D44**
+* **ECHO** &harr; **D45**
+
+Koppla följande med den andra sensorn.
+* **TRIG** &harr; **D46**
+* **ECHO** &harr; **D47**
+
+## Uppladdning
+
+För att allt ska fungera måste du göra ändringar i filen **jsonInfo.hpp**. I variabeln wifiJson, skriv in ssid och lösenordet till ditt nätverk. 
+
+Därefter, ladda upp **master.ino** på arduinon och **slave.ino** på esp32. Nu ska allting fungera.

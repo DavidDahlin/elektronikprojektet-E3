@@ -28,7 +28,7 @@ const char* catJson = R"(
 const char* wifiJson = R"(
 {
 	"wifi": {
-		"ssid": "Dawifi",
+		"ssid": "dawifi",
 		"password": "dahlin01"
 	}
 }
