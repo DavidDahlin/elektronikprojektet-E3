@@ -111,7 +111,7 @@ Koppla följande med den andra sensorn.
 
 ### Mikrobrytare och Arduinon
 
-<img src="images/mech_rela.jpgh" alt="Mikrobrytare" height="200pt" style="float: right;"/>
+<img src="images/mech_rela.jpg" alt="Mikrobrytare" height="200pt" style="float: right;"/>
 
 Koppla enligt följande mellan komponenterna.
 * **GND** &harr; **NC (2)**
