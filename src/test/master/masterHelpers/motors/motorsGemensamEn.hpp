@@ -12,17 +12,10 @@ const int MODE0_PIN = 27;
 const int MODE1_PIN = 28;
 const int MODE2_PIN = 29;
 
-const int PIN_SIGNAL = 8;
-const int PIN_DETECT= 9;
-
 const int fillingMicroSecondsDelay = 2500;
 const int turnMicroSecondsDelay = 151515; //(10 000 000) / (120/1.8/2 * 2) 
 
 double step;
-
-//FIX: TESTA DESSA
-const int STEPS_TO_BASE_DIR_LONG = 5; 
-const int STEPS_TO_BASE_DIR_SHORT = 10; 
 
 void setupMotor(){
 	pinMode(STEP_PIN_FILL_CAT_1, OUTPUT);
@@ -36,23 +29,15 @@ void setupMotor(){
 	pinMode(MODE0_PIN, OUTPUT);
 	pinMode(MODE1_PIN, OUTPUT);
 	pinMode(MODE2_PIN, OUTPUT);
-	
-	pinMode(PIN_SIGNAL, OUTPUT);
-	pinMode(PIN_DETECT, INPUT);
 
 	digitalWrite(ENABLE_PIN, HIGH);
 	digitalWrite(STEP_PIN_FILL_CAT_1, LOW);
 	digitalWrite(STEP_PIN_FILL_CAT_2, LOW);
 	digitalWrite(STEP_PIN_ROTATE, LOW);
-
 	
-	digitalWrite(PIN_SIGNAL, HIGH);
-	digitalWrite(PIN_DETECT, LOW);
-
 	delay(500);
 	digitalWrite(ENABLE_PIN, LOW);
 }
-
 
 void setFullStep(){
 	digitalWrite(MODE0_PIN, LOW);
@@ -68,8 +53,6 @@ void setTurnStep(){//Testa fram senare
 	digitalWrite(MODE2_PIN, LOW);
 	step = 50;//100/2  
 }
-
-
 
 int getFillSteps(double weight){
 	return 1000;
@@ -106,35 +89,9 @@ void turn(int dir){
 	int steps = 133; //33 halfSteps = 120
 	moveStepper(steps, turnMicroSecondsDelay, STEP_PIN_ROTATE);
 }
-
-void findBase(){
-	setTurnStep();
-	if(digitalRead(PIN_DETECT)){
-		digitalWrite(DIR_PIN, 0);
-		moveStepper(10, turnMicroSecondsDelay, STEP_PIN_ROTATE);
-	}	
-	digitalWrite(DIR_PIN, 1);
-
-	while(!digitalRead(PIN_DETECT)){
-		moveStepper(1, turnMicroSecondsDelay, STEP_PIN_ROTATE);
-	}
-
-	digitalWrite(DIR_PIN, 0);
-	moveStepper(STEPS_TO_BASE_DIR_SHORT, turnMicroSecondsDelay, STEP_PIN_ROTATE);	
-}
-
 void turnToBase(int pos){
-	int dir = !pos;
-	digitalWrite(DIR_PIN, dir);
-	while(!digitalRead(PIN_DETECT)) {
-		moveStepper(1, turnMicroSecondsDelay, STEP_PIN_ROTATE);
-	}
-	if(dir){
-		moveStepper(STEPS_TO_BASE_DIR_LONG, turnMicroSecondsDelay, STEP_PIN_ROTATE);
-	}else{
-		digitalWrite(DIR_PIN,!dir);
-		moveStepper(STEPS_TO_BASE_DIR_SHORT, turnMicroSecondsDelay, STEP_PIN_ROTATE);
-	}
+	int dir = !pos; 
+	turn(dir);
 }
 
 

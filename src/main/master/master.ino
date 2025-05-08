@@ -143,6 +143,9 @@ void setup() {
   setup_avstandsmatare();
   setupMotor();
 
+  //Komentera ut när vi vet att det fungerar
+  // findBase();
+
   delay(2000);
 }
 

@@ -12,6 +12,7 @@ Här kan vi skriva dokumentation om hur produkten används.
 * 2 [Avståndssensorer](https://www.electrokit.com/en/avstandsmatare-ultraljud-hc-sr04-2-400cm)
 * 1 Spännningsaggregat
 * 1 100 $\mu$F kondensator
+* 1 Mikrobrytare
 
 ## Hur man sätter upp komponenterna
 
@@ -107,6 +108,15 @@ Välj sedan ut vilken mätare som ska mäta på skål 1 och koppla,
 Koppla följande med den andra sensorn.
 * **TRIG** &harr; **D46**
 * **ECHO** &harr; **D47**
+
+### Mikrobrytare och Arduinon
+
+<img src="images/mech_rela.jpgh" alt="Mikrobrytare" height="200pt" style="float: right;"/>
+
+Koppla enligt följande mellan komponenterna.
+* **GND** &harr; **NC (2)**
+* **D8** &harr; **NO (3)**
+* **D9** &harr; **COM (1)**
 
 ## Uppladdning
 
