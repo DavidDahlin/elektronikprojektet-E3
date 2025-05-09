@@ -79,7 +79,7 @@ void midFeedSwitch(String uid){
     return;
   }
   String otherUid = getOtherCatUID(uid);
-    turn(dir);
+  turnLive()
   pos = !dir;
   //control time and search for other cat
   long start = millis();
@@ -147,6 +147,7 @@ void setup() {
   // findBase();
 
   delay(2000);
+  findBase();
 }
 
 void loop() {

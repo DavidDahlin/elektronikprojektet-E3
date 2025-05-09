@@ -54,10 +54,7 @@ int dir;
 
 void setup(){
   Serial.begin(115200);
-  delay(2000);
   setupMotor();
-  digitalWrite(ENABLE_PIN_FILL_CAT_2, LOW);
-  digitalWrite(ENABLE_PIN_ROTATE, LOW);
   setTurnStep();
   // // setFullStep();
   // findBase();
@@ -65,8 +62,9 @@ void setup(){
   // printNegAcc(1500);
   dir = 1;
 
-  findBase();
-  
+  // findBase();
+  delay(2000);
+
 }
 
 void loop(){
@@ -82,14 +80,29 @@ void loop(){
 
   // turnToBase(dir);
 
-  turn(dir);
+  // turn(dir);
+  // delay(10000);
 
-  dir = !dir;
+  fill(10, 1);
+
+  // dir = !dir;
   
   // ms(200*8);
   // certStep(5000);
   // delay(5000);
-  
+
+  // turn(dir);
+
+
+  // dir = !dir;
+  // delay(2000);
+
+  // turnLive();
+  // delay(2000);
+
+  // turnToBase();
+  delay(2000);
+
 
 }
 
