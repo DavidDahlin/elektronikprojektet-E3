@@ -1,12 +1,17 @@
 #ifndef MOTORS_HPP
 #define MOTORS_HPP
 
+//WARNING: HAr bytt mellan rotate och step 2
 const int STEP_PIN_FILL_CAT_1 = 22;
-const int STEP_PIN_FILL_CAT_2 = 23;
-const int STEP_PIN_ROTATE = 24;
+const int STEP_PIN_FILL_CAT_2 = 24;
+const int STEP_PIN_ROTATE = 23;
 
 const int DIR_PIN = 25;
-const int ENABLE_PIN = 26;
+
+//WARNING: HAr bytt mellan rotate och step 2
+const int ENABLE_PIN_ROTATE = 31;
+const int ENABLE_PIN_FILL_CAT_1 = 30;
+const int ENABLE_PIN_FILL_CAT_2 = 26;
 
 const int MODE0_PIN = 27;
 const int MODE1_PIN = 28;
@@ -15,14 +20,16 @@ const int MODE2_PIN = 29;
 const int PIN_SIGNAL = 8;
 const int PIN_DETECT= 9;
 
-const int fillingMicroSecondsDelay = 2500;
-const int turnMicroSecondsDelay = 151515; //(10 000 000) / (120/1.8/2 * 2) 
-
-double step;
+const int fillingMicroSecondsDelay = 500;
+const int turnMicroSecondsDelay = 12000; //(10 000 000) / (120/1.8/2 * 2) 
 
 //FIX: TESTA DESSA
-const int STEPS_TO_BASE_DIR_LONG = 5; 
-const int STEPS_TO_BASE_DIR_SHORT = 10; 
+const int BASE_LONG_POS = -100; 
+const int BASE_SHORT_POS  = -80; 
+
+
+AccelStepper stepper(1, STEP_PIN_ROTATE, DIR_PIN);
+
 
 void setupMotor(){
 	pinMode(STEP_PIN_FILL_CAT_1, OUTPUT);
@@ -31,7 +38,9 @@ void setupMotor(){
 
 	pinMode(DIR_PIN, OUTPUT);
 
-	pinMode(ENABLE_PIN, OUTPUT);
+	pinMode(ENABLE_PIN_ROTATE, OUTPUT);
+	pinMode(ENABLE_PIN_FILL_CAT_1, OUTPUT);
+	pinMode(ENABLE_PIN_FILL_CAT_2, OUTPUT);
 
 	pinMode(MODE0_PIN, OUTPUT);
 	pinMode(MODE1_PIN, OUTPUT);
@@ -40,7 +49,10 @@ void setupMotor(){
 	pinMode(PIN_SIGNAL, OUTPUT);
 	pinMode(PIN_DETECT, INPUT);
 
-	digitalWrite(ENABLE_PIN, HIGH);
+	digitalWrite(ENABLE_PIN_ROTATE, HIGH);
+	digitalWrite(ENABLE_PIN_FILL_CAT_1, HIGH);
+	digitalWrite(ENABLE_PIN_FILL_CAT_2, HIGH);
+
 	digitalWrite(STEP_PIN_FILL_CAT_1, LOW);
 	digitalWrite(STEP_PIN_FILL_CAT_2, LOW);
 	digitalWrite(STEP_PIN_ROTATE, LOW);
@@ -49,8 +61,12 @@ void setupMotor(){
 	digitalWrite(PIN_SIGNAL, HIGH);
 	digitalWrite(PIN_DETECT, LOW);
 
+	digitalWrite(ENABLE_PIN_ROTATE, LOW);
+
+	stepper.setMaxSpeed(300);
+	stepper.setAcceleration(200);
+	
 	delay(500);
-	digitalWrite(ENABLE_PIN, LOW);
 }
 
 
@@ -58,16 +74,14 @@ void setFullStep(){
 	digitalWrite(MODE0_PIN, LOW);
 	digitalWrite(MODE1_PIN, LOW);
 	digitalWrite(MODE2_PIN, LOW);
-	step = 100;  
 }
 
 void setTurnStep(){//Testa fram senare	
-	//half step
 	digitalWrite(MODE0_PIN, HIGH);
-	digitalWrite(MODE1_PIN, LOW);
+	digitalWrite(MODE1_PIN, HIGH);
 	digitalWrite(MODE2_PIN, LOW);
-	step = 50;//100/2  
 }
+
 
 
 
@@ -77,9 +91,10 @@ int getFillSteps(double weight){
 }
 
 void moveStepper(int steps, int microSecondsDelay, int stepPin){
+
 	for(int i = 0; i < steps; i++){
 		digitalWrite(stepPin, HIGH);
-		delayMicroseconds(microSecondsDelay); //För ett varv per sekund
+		delayMicroseconds(microSecondsDelay);
 		digitalWrite(stepPin, LOW);
 		delayMicroseconds(microSecondsDelay);
 	}
@@ -87,54 +102,76 @@ void moveStepper(int steps, int microSecondsDelay, int stepPin){
 
 void fill(double weight, int cat){
 	int stepPin;
-	if(cat == 1){
-		stepPin = STEP_PIN_FILL_CAT_1;
-	} else{
-		stepPin = STEP_PIN_FILL_CAT_2;
-	}
-	setFullStep();
-	//digitalWrite(DIR_PIN, XXX);
 	int steps = getFillSteps(weight);
-	moveStepper(steps, fillingMicroSecondsDelay, stepPin);
+	setFullStep();
+
+	if(cat == 1){
+		
+		digitalWrite(ENABLE_PIN_FILL_CAT_1, LOW);
+		stepPin = STEP_PIN_FILL_CAT_1;
+		moveStepper(steps, fillingMicroSecondsDelay, STEP_PIN_FILL_CAT_1);
+		digitalWrite(ENABLE_PIN_FILL_CAT_1, HIGH);
+	} else{
+		digitalWrite(ENABLE_PIN_FILL_CAT_2, LOW);
+		stepPin = STEP_PIN_FILL_CAT_2;
+		moveStepper(steps, fillingMicroSecondsDelay, STEP_PIN_FILL_CAT_2);
+		digitalWrite(ENABLE_PIN_FILL_CAT_2, LOW);
+	}
 
 } 
 
-void turn(int dir){	
-	setTurnStep();
-	digitalWrite(DIR_PIN, dir);
+void turn(int dir){
+
+	if(dir){
+		stepper.moveTo(533);
+	}else{
+		stepper.moveTo(-533);
+	}
+
+	stepper.run();
 	
-	int steps = 133; //33 halfSteps = 120
-	moveStepper(steps, turnMicroSecondsDelay, STEP_PIN_ROTATE);
 }
 
 void findBase(){
 	setTurnStep();
+	
 	if(digitalRead(PIN_DETECT)){
-		digitalWrite(DIR_PIN, 0);
-		moveStepper(10, turnMicroSecondsDelay, STEP_PIN_ROTATE);
+		stepper.setCurrentPosition(0);	
+		stepper.moveTo(300);
+		stepper.run();
 	}	
-	digitalWrite(DIR_PIN, 1);
+
+	stepper.setSpeed(-100); 
 
 	while(!digitalRead(PIN_DETECT)){
-		moveStepper(1, turnMicroSecondsDelay, STEP_PIN_ROTATE);
+		stepper.runSpeed();
 	}
-
-	digitalWrite(DIR_PIN, 0);
-	moveStepper(STEPS_TO_BASE_DIR_SHORT, turnMicroSecondsDelay, STEP_PIN_ROTATE);	
+	stepper.stop();
+	stepper.setSpeed(300);
+	stepper.setCurrentPosition(0);
+	stepper.moveTo(80);
+	stepper.run();
+	stepper.setCurrentPosition(0);
 }
 
 void turnToBase(int pos){
-	int dir = !pos;
-	digitalWrite(DIR_PIN, dir);
-	while(!digitalRead(PIN_DETECT)) {
-		moveStepper(1, turnMicroSecondsDelay, STEP_PIN_ROTATE);
-	}
-	if(dir){
-		moveStepper(STEPS_TO_BASE_DIR_LONG, turnMicroSecondsDelay, STEP_PIN_ROTATE);
-	}else{
-		digitalWrite(DIR_PIN,!dir);
-		moveStepper(STEPS_TO_BASE_DIR_SHORT, turnMicroSecondsDelay, STEP_PIN_ROTATE);
-	}
+	
+	setTurnStep();
+	// int dir = pos;
+	// digitalWrite(DIR_PIN, dir);
+	// while(!digitalRead(PIN_DETECT)) {
+	// 	moveStepper(2, turnMicroSecondsDelay, STEP_PIN_ROTATE);
+	// }
+	// if(dir){
+	// 	moveStepper(STEPS_TO_BASE_DIR_LONG, turnMicroSecondsDelay, STEP_PIN_ROTATE);
+	// }else{
+	// 	digitalWrite(DIR_PIN,!dir);
+	// 	moveStepper(STEPS_TO_BASE_DIR_SHORT, turnMicroSecondsDelay, STEP_PIN_ROTATE);
+	// }
+	//
+
+	stepper.moveTo(0);
+	stepper.run();
 }
 
 

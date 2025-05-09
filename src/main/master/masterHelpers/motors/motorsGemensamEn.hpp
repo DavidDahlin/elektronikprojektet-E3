@@ -63,11 +63,19 @@ void setFullStep(){
 
 void setTurnStep(){//Testa fram senare	
 	//half step
+	// digitalWrite(MODE0_PIN, HIGH);
+	// digitalWrite(MODE1_PIN, LOW);
+	// digitalWrite(MODE2_PIN, LOW);
+
+	
 	digitalWrite(MODE0_PIN, HIGH);
-	digitalWrite(MODE1_PIN, LOW);
+	digitalWrite(MODE1_PIN, HIGH);
 	digitalWrite(MODE2_PIN, LOW);
 	step = 50;//100/2  
+
+	step = 50;//100/2  
 }
+
 
 
 
@@ -79,7 +87,7 @@ int getFillSteps(double weight){
 void moveStepper(int steps, int microSecondsDelay, int stepPin){
 	for(int i = 0; i < steps; i++){
 		digitalWrite(stepPin, HIGH);
-		delayMicroseconds(microSecondsDelay); //För ett varv per sekund
+		delayMicroseconds(500); //För ett varv per sekund
 		digitalWrite(stepPin, LOW);
 		delayMicroseconds(microSecondsDelay);
 	}
