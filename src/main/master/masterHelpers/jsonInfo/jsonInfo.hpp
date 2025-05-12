@@ -3,7 +3,6 @@
 
 #include <ArduinoJson.h>
 
-
 //jsonfilen
 const char* catJson = R"(
 {
@@ -12,14 +11,15 @@ const char* catJson = R"(
 		"uid": "C5 e0 f0 75",
 		"food weight, grams": 10,
 		"dir": 1,
-		"fill time":"15:58, 16:01, 16:02"
+		"fill time":"15:49, 15:50, 16:00"
 	},
 	"cat2": {
 		"name": "Cocos",
 		"uid": "4e 5d d0 6f",
 		"food weight, grams": 15,
 		"dir": 0,
-		"fill time":"15:59, 16:00, 16:03"
+		"fill time":"15:49, 15:50, 16:00"
+
 	}
 }
 )";
@@ -36,9 +36,6 @@ const char* wifiJson = R"(
 
 StaticJsonDocument<256> catDoc;
 StaticJsonDocument<256> wifiDoc;
-// DynamicJsonDocument catDoc(1024);
-// DynamicJsonDocument wifiDoc(1024);
-
 
 
 void getCatDoc(){

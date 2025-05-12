@@ -1,14 +1,12 @@
 #ifndef MOTORS_HPP
 #define MOTORS_HPP
 
-// WARNING: HAr bytt mellan rotate och step 2
 const int STEP_PIN_FILL_CAT_1 = 22;
 const int STEP_PIN_FILL_CAT_2 = 24;
 const int STEP_PIN_ROTATE = 23;
 
 const int DIR_PIN = 25;
 
-// WARNING: HAr bytt mellan rotate och step 2
 const int ENABLE_PIN_ROTATE = 31;
 const int ENABLE_PIN_FILL_CAT_1 = 30;
 const int ENABLE_PIN_FILL_CAT_2 = 26;
@@ -20,7 +18,7 @@ const int MODE2_PIN = 29;
 const int PIN_SIGNAL = 8;
 const int PIN_DETECT = 9;
 
-const int POS_1 = 570;
+const int POS_1 = 537;
 const int BASE_SHORT_POS = -48;
 const int BASE_LONG_POS = -80;
 
@@ -61,8 +59,7 @@ void setupMotor() {
   digitalWrite(PIN_SIGNAL, HIGH);
   digitalWrite(PIN_DETECT, LOW);
 
-  // digitalWrite(ENABLE_PIN_ROTATE, LOW);
-  digitalWrite(ENABLE_PIN_ROTATE, HIGH);
+  digitalWrite(ENABLE_PIN_ROTATE, LOW);
   
   stepper_turn.setMaxSpeed(300);
   stepper_turn.setAcceleration(200);
@@ -82,7 +79,7 @@ void setFillStep() {
   digitalWrite(MODE2_PIN, LOW);
 }
 
-void setTurnStep() { // Testa fram senare
+void setTurnStep() {
   digitalWrite(MODE0_PIN, HIGH);
   digitalWrite(MODE1_PIN, HIGH);
   digitalWrite(MODE2_PIN, LOW);
@@ -90,7 +87,7 @@ void setTurnStep() { // Testa fram senare
 
 int getFillQuarters(double weight) {
   return (int) weight * 60/15;
-  // formula for getting the right amount of food
+  // formel för mängd mat i form av kvartar vridna
 }
 
 

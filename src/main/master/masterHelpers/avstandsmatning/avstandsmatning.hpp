@@ -1,9 +1,8 @@
 #ifndef AVSTANDSMATNING_HPP
 #define AVSTANDSMATNING_HPP
 
-// #include <iterator>
 #include <math.h>
-//Set pins
+
 #define TRIG_PIN_2 44
 #define TRIG_PIN_1 46
 #define ECHO_PIN_2 45
@@ -56,7 +55,6 @@ class distSensor{
 			return false;
 		}
 		
-
 };
 
 

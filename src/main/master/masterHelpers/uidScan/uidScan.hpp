@@ -3,7 +3,6 @@
 
 #include <SPI.h>
 #include <MFRC522.h>
-//#include <PrintEx.h>
 
 unsigned long startTime;
 
@@ -28,12 +27,12 @@ String scanForTags(int milliWaitingTime){
         scannedUID += String(mfrc522.uid.uidByte[i], HEX);
         scannedUID += " ";
       }
-    scannedUID.trim(); // Remove trailing space
-    mfrc522.PICC_HaltA(); // Stop communication
+    scannedUID.trim(); 
+    mfrc522.PICC_HaltA(); // Stoppa kommunikationen
     return scannedUID;
     }
   }
-  mfrc522.PICC_HaltA(); // Stop communication
+  mfrc522.PICC_HaltA(); 
   Serial.println("Did not find anything");
   return "";
 }
@@ -46,7 +45,5 @@ bool quickScanFor(String uid){
       }
   return false;
 }
-
-
 
 #endif

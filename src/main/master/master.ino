@@ -1,9 +1,5 @@
 #include "masterHelpers.h"
 
-#define SEEK 0
-#define FEED 1
-#define FILL 2
-
 const char* ssid;
 const char* password;
 const long feedingTime = 1000*10; //10 s i millisekunder
@@ -67,6 +63,7 @@ void fillBowl(){
         Serial.println("Cat 1 fill, started");
         weight = getFoodweight("cat1");
         fill(weight, 1);
+        marioPlayMusic();
         cat1FT[i] = 24;
       }
     }
@@ -75,6 +72,7 @@ void fillBowl(){
         Serial.println("Cat 2 fill, started");
         weight = getFoodweight("cat2");
         fill(weight, 2);
+        crayFrogPlayMusic();
         cat2FT[i] = 24;
       }
     }
@@ -152,10 +150,13 @@ void setup(){
     sendPassword(password);
   } 
 
+
   fillCatFTArray(getFillTime("cat1"), "cat1");
   fillCatFTArray(getFillTime("cat2"), "cat2");
   resetFill = true;
 
+  // crayFrogPlayMusic();
+  windowsPlayMusic();
 
   findBase();
   
