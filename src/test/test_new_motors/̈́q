@@ -20,7 +20,7 @@ bool i2cSecured(){
 	String org = "00100";
 	unsigned long startTime = millis();
 	const unsigned long timeout = 20000; // 20 seconds in milliseconds
-	while((millis() - startTime < timeout)){
+	while(true && (millis() - startTime < timeout)){
 		Wire.beginTransmission(SLAVE_ADDRESS);
 		Wire.write(org.c_str());
 		Wire.endTransmission();

@@ -33,7 +33,6 @@ void connectWifi(){
     if(setupWifi(ssid, password)){
       flag = '1';
     }
-    
   }
 }
 
@@ -60,6 +59,7 @@ void receiveEvent(int howMany){
 
   
   Serial.println("data: " + data);
+  
 
   switch(flag){
     case '2': 
@@ -103,12 +103,14 @@ void setupI2C(int sda_pin, int scl_pin){
 	Wire.begin(SLAVE_ADDRESS);
 	Wire.onReceive(receiveEvent);
 	Wire.onRequest(requestEvent);
+  Serial.println("I2C setup");
 }
 
 void setup(){
-  setupI2C(SDA_PIN,SCL_PIN);
   Serial.begin(115200);
   delay(2000);
+  setupI2C(SDA_PIN,SCL_PIN);
+
   
 }
 

@@ -10,16 +10,16 @@ const char* catJson = R"(
 	"cat1": {
 		"name": "Milo",
 		"uid": "C5 e0 f0 75",
-		"food weight, grams": 10,
+		"food weight, grams": 100,
 		"dir": 1,
-		"fill time":"15:58, 16:01, 16:02"
+		"fill time":"12:13, 12:14, 16:00"
 	},
 	"cat2": {
 		"name": "Cocos",
 		"uid": "4e 5d d0 6f",
-		"food weight, grams": 15,
+		"food weight, grams": 200,
 		"dir": 0,
-		"fill time":"15:59, 16:00, 16:03"
+		"fill time":"08:50, 12:30, 18:50"
 	}
 }
 )";
@@ -28,7 +28,7 @@ const char* catJson = R"(
 const char* wifiJson = R"(
 {
 	"wifi": {
-		"ssid": "Dawifi",
+		"ssid": "dawifi",
 		"password": "dahlin01"
 	}
 }

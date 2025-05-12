@@ -20,9 +20,11 @@ const int MODE2_PIN = 29;
 const int PIN_SIGNAL = 8;
 const int PIN_DETECT = 9;
 
-const int POS_1 = 570;
+const int fillingMicroSecondsDelay = 500;
+const int turnMicroSecondsDelay = 12000; //(10 000 000) / (120/1.8/2 * 2)
+
+const int POS_1 = 533;
 const int BASE_SHORT_POS = -48;
-const int BASE_LONG_POS = -80;
 
 const int QUART = 100;
 const int FILL_SPEED = 12000;
@@ -61,9 +63,8 @@ void setupMotor() {
   digitalWrite(PIN_SIGNAL, HIGH);
   digitalWrite(PIN_DETECT, LOW);
 
-  // digitalWrite(ENABLE_PIN_ROTATE, LOW);
-  digitalWrite(ENABLE_PIN_ROTATE, HIGH);
-  
+  digitalWrite(ENABLE_PIN_ROTATE, LOW);
+
   stepper_turn.setMaxSpeed(300);
   stepper_turn.setAcceleration(200);
 
@@ -130,22 +131,18 @@ void fill(double weight, int cat) {
 			stepper_fill_2.setCurrentPosition(0);
 			oneStepBackTwoStepsForward(stepper_fill_2);
 		}
-		digitalWrite(ENABLE_PIN_FILL_CAT_2, HIGH);
+		digitalWrite(ENABLE_PIN_FILL_CAT_2, LOW);
 	}
 }
 
 void turn(int dir) {
 	setTurnStep();
-	int pos;
 	if (dir) {
 		stepper_turn.moveTo(POS_1);
-		pos = POS_1;
 	} else {
 		stepper_turn.moveTo(-POS_1);
-		pos = -POS_1;
 	}
 	run(stepper_turn);
-	stepper_turn.setCurrentPosition(pos);
 }
 
 void turnLive() {
@@ -185,32 +182,12 @@ void findBase() {
   run(stepper_turn);
 }
 
-
 void turnToBase() {
-  Serial.println(stepper_turn.currentPosition());
-  if(stepper_turn.currentPosition()>0){
-    findBase();
-  }else{
-    setTurnStep();
 
-    if (digitalRead(PIN_DETECT)) {
-      stepper_turn.setCurrentPosition(0);
-      stepper_turn.moveTo(100);
-      run(stepper_turn);
-    }
+  setTurnStep();
 
-    stepper_turn.setSpeed(150);
-
-    while (!digitalRead(PIN_DETECT)) {
-    stepper_turn.runSpeed();
-    }
-    stepper_turn.stop();
-    stepper_turn.setSpeed(300);
-    stepper_turn.setCurrentPosition(BASE_LONG_POS);
-    stepper_turn.moveTo(0);
-    run(stepper_turn);
-  }
-
+  stepper_turn.moveTo(0);
+  run(stepper_turn);
 }
 
 #endif

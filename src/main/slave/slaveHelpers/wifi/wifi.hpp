@@ -6,10 +6,9 @@
 #include <WiFiUdp.h>
 
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org", 3600, 60000); // UTC+1
+NTPClient timeClient(ntpUDP, "pool.ntp.org", 3600, 60000); // pool.ntp.org (närmaste ntp server)
 
 bool setupWifi(String ssid, String password){
-	// Connect to Wi-Fi
 	WiFi.begin(ssid, password);
 	
 	unsigned long startTime = millis();

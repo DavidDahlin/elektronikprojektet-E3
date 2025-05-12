@@ -11,7 +11,7 @@
 
 
 const float SPEED_OF_SOUND = 343;
-const float MIN_DIST_1 = 7 + 0.5;
+const float MIN_DIST_1 = 74;
 const float MIN_DIST_2 = 7.3 + 0.5;
 
 class distSensor{

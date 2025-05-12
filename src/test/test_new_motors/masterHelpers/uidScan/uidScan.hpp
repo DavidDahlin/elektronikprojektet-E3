@@ -12,18 +12,16 @@ unsigned long startTime;
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 void setupReader(){
-
   SPI.begin();
   mfrc522.PCD_Init();
   Serial.println("RFID reader succesfully setup");
 }
 
-String scanForTags(){
+String scanForTags(int milliWaitingTime){
+  Serial.println("[Scan started]");
   startTime = millis();
-
-  while(millis() - startTime < 10000){
-    if(mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()){
-      Serial.println("Läser..."); 
+  while(millis() - startTime < milliWaitingTime){
+    if(mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()){ 
       String scannedUID;
       for (byte i = 0; i < mfrc522.uid.size; i++) {
         if (mfrc522.uid.uidByte[i] < 0x10) scannedUID += "0";
@@ -31,7 +29,7 @@ String scanForTags(){
         scannedUID += " ";
       }
     scannedUID.trim(); // Remove trailing space
-    Serial.println("Scanned: " + scannedUID);
+    mfrc522.PICC_HaltA(); // Stop communication
     return scannedUID;
     }
   }
@@ -41,23 +39,11 @@ String scanForTags(){
 }
 
 bool quickScanFor(String uid){
-  startTime = millis();
-  while(millis() - startTime < 400){
-    if(mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()){
-      String scannedUID;
-      for (byte i = 0; i < mfrc522.uid.size; i++) {
-        if (mfrc522.uid.uidByte[i] < 0x10) scannedUID += "0";
-        scannedUID += String(mfrc522.uid.uidByte[i], HEX);
-        scannedUID += " ";
-      }
-      scannedUID.trim(); // Remove trailing space
+      String scannedUID = scanForTags(400);
       if(scannedUID.equals(uid)){
         Serial.println("Wrong cat detected");
         return true;
       }
-    }
-  }
-  mfrc522.PICC_HaltA(); // Stop communication
   return false;
 }
 

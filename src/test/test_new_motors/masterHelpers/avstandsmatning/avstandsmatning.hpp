@@ -1,124 +1,89 @@
 #ifndef AVSTANDSMATNING_HPP
 #define AVSTANDSMATNING_HPP
 
+// #include <iterator>
 #include <math.h>
-
 //Set pins
-#define TRIG_PIN_1 44
-#define TRIG_PIN_2 46
-#define ECHO_PIN_1 45
-#define ECHO_PIN_2 47
+#define TRIG_PIN_2 44
+#define TRIG_PIN_1 46
+#define ECHO_PIN_2 45
+#define ECHO_PIN_1 47
 
 
 const float SPEED_OF_SOUND = 343;
-const float MIN_DIST =50;
+const float MIN_DIST_1 = 7 + 0.5;
+const float MIN_DIST_2 = 7.3 + 0.5;
 
+class distSensor{
+	public:
+		int trigPin;
+		int echoPin;
+		float minDist;
+		
+		distSensor(int trigPin, int echoPin, float minDist){
+			this->trigPin = trigPin;
+			this->echoPin = echoPin;
+			this->minDist = minDist;	
+		}
+		
+		void setupPins(){
+			pinMode(trigPin, OUTPUT);
+			pinMode(echoPin, INPUT);
+			digitalWrite(trigPin, LOW);
+			digitalWrite(echoPin, LOW);
+		}
+		
+		float getDistance(){
+			float avg = 0;
+			int n  = 100;
+			float dur;
+			float dis;
+			for(int i = 0; i < n; i++){
+				digitalWrite(trigPin, HIGH);
+				delayMicroseconds(10);
+				digitalWrite(trigPin, LOW);
+				dur = pulseIn(echoPin, HIGH) * 1e-6;
+				dis = dur * SPEED_OF_SOUND /2 * 100;//cm 
+				avg += dis/n;
+			}
+			return avg;
+		}
+
+		bool isFull(){
+			if(getDistance() < minDist){
+				return true;
+			}
+			return false;
+		}
+		
+
+};
+
+
+distSensor ds1(TRIG_PIN_1,ECHO_PIN_1, MIN_DIST_1);
+distSensor ds2(TRIG_PIN_2,ECHO_PIN_2, MIN_DIST_2);
+	
 void setup_avstandsmatare(){
-	pinMode(TRIG_PIN_1, OUTPUT);
-	pinMode(TRIG_PIN_2, OUTPUT);
-	pinMode(ECHO_PIN_1, INPUT);
-	pinMode(ECHO_PIN_2, INPUT);
-	digitalWrite(TRIG_PIN_1, LOW);
-	digitalWrite(TRIG_PIN_2, LOW);
+	ds1.setupPins();
+	ds2.setupPins();
 }
 
 
-float getDistance1(){
-	float avg = 0;
-	int n = 100;
-
-	for(int i = 0; i < n ; i++){
-		digitalWrite(TRIG_PIN_1,HIGH);
-		delayMicroseconds(10);
-		digitalWrite(TRIG_PIN_1,LOW);
-		
-		long duration = pulseIn(ECHO_PIN_1, HIGH, 25000);
-		float distance = duration / 2 * SPEED_OF_SOUND * pow(10, -3); 
-		
-		if(distance > 1){
-			avg += distance/n;
-		}else{
-		i--;
-		}
-		delayMicroseconds(10);
+float getDistance(int nr){
+	float avg;
+	if(nr == 1){
+		avg = ds1.getDistance();
+	}else{
+		avg = ds2.getDistance();
 	}
 	return avg;
 }
 
-float getDistance2(){
-	float avg = 0;
-	int n = 100;
-
-	for(int i = 0; i < n ; i++){
-		digitalWrite(TRIG_PIN_2,HIGH);
-		delayMicroseconds(10);
-		digitalWrite(TRIG_PIN_2,LOW);
-		
-		long duration = pulseIn(ECHO_PIN_2, HIGH, 25000);
-		float distance = duration / 2 * SPEED_OF_SOUND * pow(10, -3); 
-		
-		if(distance > 1){
-			avg += distance/n;
-		}else{
-		i--;
-		}
-		delayMicroseconds(10);
+bool isFull(int nr){
+	if(nr){
+		return ds1.isFull();
 	}
-	return avg;
+	return ds2.isFull();
 }
 
-bool isFull1(){
-
-	float avg = 0;
-	int n = 100;
-
-	for(int i = 0; i < n ; i++){
-		digitalWrite(TRIG_PIN_1,HIGH);
-		delayMicroseconds(10);
-		digitalWrite(TRIG_PIN_1,LOW);
-		
-		long duration = pulseIn(ECHO_PIN_1, HIGH, 25000);
-		float distance = duration / 2 * SPEED_OF_SOUND * pow(10, -3); 
-		
-		if(distance > 1){
-			avg += distance/n;
-		}else{
-		i--;
-		}
-		delayMicroseconds(10);
-	}
-	if(avg > MIN_DIST){
-		return false;
-	}
-	return true;
-}
-
-bool isFull2(){
-
-	float avg = 0;
-	int n = 100;
-
-	for(int i = 0; i < n ; i++){
-		digitalWrite(TRIG_PIN_2,HIGH);
-		delayMicroseconds(10);
-		digitalWrite(TRIG_PIN_2,LOW);
-		
-		long duration = pulseIn(ECHO_PIN_2, HIGH, 25000);
-		float distance = duration / 2 * SPEED_OF_SOUND * pow(10, -3); 
-		
-		if(distance > 1){
-			avg += distance/n;
-		}else{
-		i--;
-		}
-		delayMicroseconds(10);
-	}
-	if(avg > MIN_DIST){
-		return false;
-	}
-	return true;
-}
-
-
-#endif 
-
+#endif

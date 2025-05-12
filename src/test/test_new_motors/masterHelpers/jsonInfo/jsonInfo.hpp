@@ -10,16 +10,16 @@ const char* catJson = R"(
 	"cat1": {
 		"name": "Milo",
 		"uid": "C5 e0 f0 75",
-		"food weight, grams": 100,
+		"food weight, grams": 10,
 		"dir": 1,
-		"fill time":"12:13, 12:14, 16:00"
+		"fill time":"15:58, 16:01, 16:02"
 	},
 	"cat2": {
 		"name": "Cocos",
 		"uid": "4e 5d d0 6f",
-		"food weight, grams": 200,
+		"food weight, grams": 15,
 		"dir": 0,
-		"fill time":"08:50, 12:30, 18:50"
+		"fill time":"15:59, 16:00, 16:03"
 	}
 }
 )";
@@ -28,7 +28,7 @@ const char* catJson = R"(
 const char* wifiJson = R"(
 {
 	"wifi": {
-		"ssid": "dawifi",
+		"ssid": "Dawifi",
 		"password": "dahlin01"
 	}
 }
@@ -38,6 +38,8 @@ StaticJsonDocument<256> catDoc;
 StaticJsonDocument<256> wifiDoc;
 // DynamicJsonDocument catDoc(1024);
 // DynamicJsonDocument wifiDoc(1024);
+
+
 
 void getCatDoc(){
 	DeserializationError error = deserializeJson(catDoc, catJson);
@@ -59,8 +61,13 @@ void getWifiDoc(){
 	}
 }
 
-int getMatchDirection(String scannedUID){	
+void setupJSON(){
+	getWifiDoc();
 	getCatDoc();
+}
+
+
+int getMatchDirection(String scannedUID){	
 	for(JsonPair entry: catDoc.as<JsonObject>()){
 		const char* storedUID = entry.value()["uid"].as<const char*>();
 		int dir = entry.value()["dir"].as<int>();
@@ -79,7 +86,6 @@ int getMatchDirection(String scannedUID){
 }
 
 String getOtherCatUID(String scannedUID){
-	getCatDoc();
 	for(JsonPair entry: catDoc.as<JsonObject>()){
 		const char* storedUID = entry.value()["uid"].as<const char*>();
 		
@@ -96,7 +102,6 @@ String getOtherCatUID(String scannedUID){
 }
 
 double getFoodweight(String cat){	
-	getCatDoc();
 	for(JsonPair entry: catDoc.as<JsonObject>()){
 		const char* storedCat = entry.key().c_str();
 		double foodWeight = entry.value()["food weight, grams"].as<double>();
@@ -112,7 +117,6 @@ double getFoodweight(String cat){
 }
 
 const char* getFillTime(String cat){
-	getCatDoc();
 	for(JsonPair entry: catDoc.as<JsonObject>()){
 		const char* storedCat = entry.key().c_str();
 		const char* fillTime = entry.value()["fill time"].as<const char*>();
@@ -128,7 +132,6 @@ const char* getFillTime(String cat){
 
 
 const char* getWifiSSID(){
-	getWifiDoc();
 	for(JsonPair entry: wifiDoc.as<JsonObject>()){
 		const char* ssid = entry.value()["ssid"].as<const char*>();
 
@@ -139,7 +142,6 @@ const char* getWifiSSID(){
 }
 
 const char* getWifiPassword(){
-	getWifiDoc();
 	for(JsonPair entry: wifiDoc.as<JsonObject>()){
 		const char* password = entry.value()["password"].as<const char*>();
 

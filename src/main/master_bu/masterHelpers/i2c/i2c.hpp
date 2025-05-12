@@ -9,18 +9,11 @@ void setupI2C(){
 	Wire.begin();
 }
 
-
-void print(String s){
-	Serial.print("Sent: ");
-	Serial.println(s);
-}
-
 bool i2cSecured(){
-	Serial.println("i2c initialized");
 	String org = "00100";
 	unsigned long startTime = millis();
 	const unsigned long timeout = 20000; // 20 seconds in milliseconds
-	while((millis() - startTime < timeout)){
+	while(true && (millis() - startTime < timeout)){
 		Wire.beginTransmission(SLAVE_ADDRESS);
 		Wire.write(org.c_str());
 		Wire.endTransmission();
@@ -89,7 +82,6 @@ void sendSSID(String ssid){
 	Wire.beginTransmission(SLAVE_ADDRESS);
 	Wire.write(formated.c_str());
 	Wire.endTransmission();
-	print(ssid);
 }
 
 void sendPassword(String pw){
@@ -97,10 +89,7 @@ void sendPassword(String pw){
 	Wire.beginTransmission(SLAVE_ADDRESS);
 	Wire.write(formated.c_str());
 	Wire.endTransmission();
-	print(pw);
 }
-
-
 
 
 #endif

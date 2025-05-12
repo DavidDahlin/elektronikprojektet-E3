@@ -18,7 +18,6 @@ void setupReader(){
 }
 
 String scanForTags(int milliWaitingTime){
-  Serial.println("[Scan started]");
   startTime = millis();
   while(millis() - startTime < milliWaitingTime){
     if(mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial()){ 
