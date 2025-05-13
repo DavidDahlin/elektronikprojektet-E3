@@ -119,14 +119,17 @@ void setup(){
   delay(5000); // Vänta på att esp ska komma igång.
   Serial.begin(115200);
   delay(2000);
+  
 
+  
   setupI2C();
   setupMotor();
   setup_avstandsmatare();
-
   setupJSON();
-  setupReader();
 
+  
+  setupReader();
+ 
   delay(2000);
 
   // scanForTags(10000);//TA bort

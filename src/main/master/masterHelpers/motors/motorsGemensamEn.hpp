@@ -18,7 +18,7 @@ const int MODE2_PIN = 29;
 const int PIN_SIGNAL = 8;
 const int PIN_DETECT = 9;
 
-const int POS_1 = 537;
+const int POS_1 = 535;
 const int BASE_SHORT_POS = -48;
 const int BASE_LONG_POS = -80;
 
@@ -116,6 +116,9 @@ void fill(double weight, int cat) {
 		for(int i = 0; i < quarters; i++){
 			stepper_fill_1.setCurrentPosition(0);
 			oneStepBackTwoStepsForward(stepper_fill_1);
+			if(i%10 == 0 && isFull(1)){
+			  break;
+			}
 		}
 		digitalWrite(ENABLE_PIN_FILL_CAT_1, HIGH);
 	} else {
@@ -126,6 +129,9 @@ void fill(double weight, int cat) {
 		for(int i = 0; i < quarters; i++){
 			stepper_fill_2.setCurrentPosition(0);
 			oneStepBackTwoStepsForward(stepper_fill_2);
+			if(i%10 == 0 && isFull(2)){
+			  break;
+			}
 		}
 		digitalWrite(ENABLE_PIN_FILL_CAT_2, HIGH);
 	}
@@ -135,10 +141,10 @@ void turn(int dir) {
 	setTurnStep();
 	int pos;
 	if (dir) {
-		stepper_turn.moveTo(POS_1);
+		stepper_turn.moveTo(POS_1 + BASE_SHORT_POS);
 		pos = POS_1;
 	} else {
-		stepper_turn.moveTo(-POS_1);
+		stepper_turn.moveTo(-POS_1 + BASE_SHORT_POS);
 		pos = -POS_1;
 	}
 	run(stepper_turn);

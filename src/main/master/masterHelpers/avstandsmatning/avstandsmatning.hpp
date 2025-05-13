@@ -10,8 +10,8 @@
 
 
 const float SPEED_OF_SOUND = 343;
-const float MIN_DIST_1 = 7 + 0.5;
-const float MIN_DIST_2 = 7.3 + 0.5;
+const float MIN_DIST_1 = 7.69 + 1;
+const float MIN_DIST_2 = 8.2 + 1;
 
 class distSensor{
 	public:
@@ -34,7 +34,7 @@ class distSensor{
 		
 		float getDistance(){
 			float avg = 0;
-			int n  = 100;
+			int n  = 50;
 			float dur;
 			float dis;
 			for(int i = 0; i < n; i++){
@@ -78,7 +78,7 @@ float getDistance(int nr){
 }
 
 bool isFull(int nr){
-	if(nr){
+	if(nr == 1){
 		return ds1.isFull();
 	}
 	return ds2.isFull();
