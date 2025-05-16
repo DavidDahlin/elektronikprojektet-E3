@@ -120,14 +120,11 @@ void setup(){
   Serial.begin(115200);
   delay(2000);
   
-
-  
   setupI2C();
   setupMotor();
   setup_avstandsmatare();
   setupJSON();
 
-  
   setupReader();
  
   delay(2000);
