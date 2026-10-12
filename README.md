@@ -118,6 +118,11 @@ Koppla enligt följande mellan komponenterna.
 * **D8** &harr; **NO (3)**
 * **D9** &harr; **COM (1)**
 
+### Högtalare och Arduinon
+Koppla enligt följande:
+* **GND** &harr; **-**
+* **D10** &harr; **+**
+
 ## Uppladdning
 
 För att allt ska fungera måste du göra ändringar i filen **jsonInfo.hpp**. I variabeln wifiJson, skriv in ssid och lösenordet till ditt nätverk. 
